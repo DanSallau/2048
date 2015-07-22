@@ -71,15 +71,15 @@ namespace _2048_Console
     }
     class Program
     {
-        private static int[][] iBoard;
+        private static int[][] Tiles;
         private static Random rd;
         static void Main(string[] args)
         {
-            iBoard = new int[4][];
+            Tiles = new int[4][];
 
             for (int i = 0; i < 4; i++)
             {
-                iBoard[i] = new int[4];
+                Tiles[i] = new int[4];
             }
 
             ConsoleKeyInfo cki;
@@ -90,7 +90,7 @@ namespace _2048_Console
 
             Console.WriteLine("Press any combination of CTL, ALT, and SHIFT, and a console key.");
             Console.WriteLine("Press the Escape (Esc) key to quit: \n");
-            iBoard = WriteDefault();
+            Tiles = WriteDefault();
            // writeTiles(iBoard);
             do
             {
@@ -98,26 +98,30 @@ namespace _2048_Console
 
                 if (cki.Key == ConsoleKey.DownArrow)
                 {
-                    rearrangeTiles(iBoard, KeyCode.Down);
-                    writeTiles(iBoard);
+                    rearrangeTiles(Tiles, KeyCode.Down);
+                    mergeTiles(Tiles, KeyCode.Down);
+                    writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 else if (cki.Key == ConsoleKey.UpArrow)
                 {
-                    rearrangeTiles(iBoard, KeyCode.Up);
-                    writeTiles(iBoard);
+                    rearrangeTiles(Tiles, KeyCode.Up);
+                    mergeTiles(Tiles, KeyCode.Up);
+                    writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 else if (cki.Key == ConsoleKey.LeftArrow)
                 {
-                    rearrangeTiles(iBoard, KeyCode.Left);
-                    writeTiles(iBoard);
+                    rearrangeTiles(Tiles, KeyCode.Left);
+                    mergeTiles(Tiles, KeyCode.Left);
+                    writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 else if (cki.Key == ConsoleKey.RightArrow)
                 {
-                    rearrangeTiles(iBoard, KeyCode.Right);
-                    writeTiles(iBoard);
+                    rearrangeTiles(Tiles, KeyCode.Right);
+                    mergeTiles(Tiles, KeyCode.Right);
+                    writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 /*
@@ -129,33 +133,17 @@ namespace _2048_Console
                  */
             } while (cki.Key != ConsoleKey.Escape);
 
-            /*
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    iBoard[i][j] = (i * j);
-                    Console.Write(iBoard[i][j]);
-                }
-                Console.WriteLine();
-            }
-             */
-          
-
-           
-           
-
         }
-  
+      
         public static void writeTiles(int[][] tiles)
         {
             Console.Clear();
 
-            for (int i = 0; i < iBoard.Count(); i++)
+            for (int i = 0; i < Tiles.Count(); i++)
             {
-                for (int j = 0; j < iBoard[i].Count(); j++)
+                for (int j = 0; j < Tiles[i].Count(); j++)
                 {
-                    Console.Write(Indent(2) + iBoard[i][j]);
+                    Console.Write(Indent(2) + Tiles[i][j]);
                 }
                 Console.WriteLine();
             }
@@ -165,10 +153,91 @@ namespace _2048_Console
         {
             return "".PadLeft(count);
         }
-        public static int[][] mergeTiles(int[][] tiles, KeyCode key)
+        private static int[][] mergeTiles(int[][] tiles, KeyCode key)
         {
+            if (key == KeyCode.Left)
+            {
+                for (int i = 0; i < tiles.Count(); i++)
+                {
+                    for (int j = 0; j < (tiles.Count() -1); j++)
+                    {
+                        if ((j + 1) > (Tiles.Count() -1))
+                        {
+                            tiles[i][j] = tiles[i][j];
+                            break;
+                        }
+                        if (tiles[i][j] == tiles[i][j + 1])
+                        {
+                            tiles[i][j] =  tiles[i][j] + tiles[i][j + 1];
+                            tiles[i][j + 1] = 0;
+                        }
 
-            return iBoard;
+                    }
+                }
+            }
+            else if (key == KeyCode.Right)
+            {
+                for (int i = 0; i < tiles.Count(); i++)
+                {
+                    for (int j = (tiles[i].Count() - 1); j > 0 ; j--)
+                    {
+                        if ((j - 1) < 0)
+                        {
+                            tiles[i][j] = tiles[i][j];
+                            break;
+                        }
+                        if (tiles[i][j] == tiles[i][j - 1])
+                        {
+                            tiles[i][j] = tiles[i][j] + tiles[i][j - 1];
+                            tiles[i][j - 1] = 0;
+                        }
+
+                    }
+                }
+            }
+            else if (key == KeyCode.Up)
+            {
+                for (int i = 0; i < tiles.Count(); i++)
+                {
+                    for (int j = 0; j < Tiles.Count(); j++)
+                    {
+                        if ((i + 1) > (Tiles.Count() -1))
+                        {
+                            tiles[i][j] = tiles[i][j];
+                            break;
+                        }
+                        if (tiles[i][j] == tiles[i + 1][j])
+                        {
+                            tiles[i][j] = tiles[i][j] + tiles[i + 1][j];
+
+                            tiles[i + 1][j] = 0;               
+                        }
+
+                    }
+                }
+            }
+            else if (key == KeyCode.Down)
+            {
+                for (int i = (Tiles.Count() - 1); i >= 0; i--)
+                {
+                    for (int j = 0; j < Tiles.Count(); j++)
+                    {
+                        if ((i - 1) < 0)
+                        {
+                            tiles[i][j] = tiles[i][j];
+                            break;
+                        }
+                        if (tiles[i][j] == tiles[i - 1][j])
+                        {
+                            tiles[i][j] = tiles[i][j] + tiles[i - 1][j];
+
+                            tiles[i - 1][j] = 0;
+                        }
+
+                    }
+                }
+            }
+            return Tiles;
         }
         private static int[][] rearrangeTiles(int[][] tiles, KeyCode key)
         {
@@ -176,9 +245,9 @@ namespace _2048_Console
             int count = 0;
             if (key == KeyCode.Left)
             {
-                temp = new int[iBoard.Count()][];
+                temp = new int[Tiles.Count()][];
 
-                foreach(int[] arr in iBoard)
+                foreach(int[] arr in Tiles)
                 {
                     Array.Sort<int>(arr,
                     new Comparison<int>(
@@ -189,14 +258,14 @@ namespace _2048_Console
                     count++;
                 }
 
-                iBoard = temp;
+                Tiles = temp;
                 
             }
             else if (key == KeyCode.Right)
             {
-                temp = new int[iBoard.Count()][];
+                temp = new int[Tiles.Count()][];
 
-                foreach (int[] arr in iBoard)
+                foreach (int[] arr in Tiles)
                 {
                     Array.Sort<int>(arr,
                     new Comparison<int>(
@@ -207,31 +276,30 @@ namespace _2048_Console
                     count++;
                 }
 
-                iBoard = temp;
+                Tiles = temp;
                
             }
             else if (key == KeyCode.Up)
             {
-                for (int i = 0; i < iBoard.Count(); i++)
+                for (int i = 0; i < Tiles.Count(); i++)
                 {
-                    for (int j = 0; j < iBoard.Count(); j++)
+                    for (int j = 0; j < Tiles.Count(); j++)
                     {
-                        if (iBoard[i][j] > 0)
+                        if (Tiles[i][j] > 0)
                             continue;
-                        if (iBoard[i][j] == 0)
+                        if (Tiles[i][j] == 0)
                         {
                             int u = i;
 
 
-                            while (u < iBoard.Count())
+                            while (u < Tiles.Count())
                             {
-                                if (iBoard[i][j] > 0)
+                                if (Tiles[i][j] > 0)
                                     break;
-                                if (iBoard[u][j] > 0)
+                                if (Tiles[u][j] > 0)
                                 {
-
-                                    iBoard[i][j] = iBoard[u][j];
-                                    iBoard[u][j] = 0;
+                                    Tiles[i][j] = Tiles[u][j];
+                                    Tiles[u][j] = 0;
                                 }
                                 u++;
                             }
@@ -244,26 +312,26 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Down)
             {
-                for (int i = (iBoard.Count()- 1); i >=0; i--)
+                for (int i = (Tiles.Count()- 1); i >=0; i--)
                 {
-                    for (int j = 0; j < iBoard.Count(); j++)
+                    for (int j = 0; j < Tiles.Count(); j++)
                     {
-                        if (iBoard[i][j] > 0)
+                        if (Tiles[i][j] > 0)
                             continue;
-                        if (iBoard[i][j] == 0)
+                        if (Tiles[i][j] == 0)
                         {
                             int u = i;
 
 
-                            while (u < iBoard.Count() && u>=0)
+                            while (u < Tiles.Count() && u>=0)
                             {
-                                if (iBoard[i][j] > 0)
+                                if (Tiles[i][j] > 0)
                                     break;
-                                if (iBoard[u][j] > 0)
+                                if (Tiles[u][j] > 0)
                                 {
 
-                                    iBoard[i][j] = iBoard[u][j];
-                                    iBoard[u][j] = 0;
+                                    Tiles[i][j] = Tiles[u][j];
+                                    Tiles[u][j] = 0;
                                 }
                                 u--;
                             }
@@ -275,7 +343,7 @@ namespace _2048_Console
 
             }
 
-            return iBoard;
+            return Tiles;
         }
         private static int[][] WriteDefault()
         {
@@ -285,16 +353,16 @@ namespace _2048_Console
                 int px = rd.Next(0, 4);
                 int py = rd.Next(0, 4);
 
-                if (iBoard[px][py] == 0)
+                if (Tiles[px][py] == 0)
                 {
-                    iBoard[px][py] = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
+                    Tiles[px][py] = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
 
                     int c = rd.Next(0, 20);
                     int g = rd.Next(0, 15);
                 }
             }
             
-            return iBoard;
+            return Tiles;
         }
     }
 }
