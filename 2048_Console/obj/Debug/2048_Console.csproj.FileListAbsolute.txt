@@ -9,3 +9,4 @@ D:\nuru\Games\2048\2048_Console\obj\Debug\2048_Console.exe
 D:\nuru\Games\2048\2048_Console\obj\Debug\2048_Console.pdb
 D:\nuru\Games\2048\2048_Console\bin\Debug\2048_Console.exe
 D:\nuru\Games\2048\2048_Console\bin\Debug\2048_Console.pdb
+D:\nuru\Games\2048\2048_Console\obj\Debug\2048_Console.csprojResolveAssemblyReference.cache

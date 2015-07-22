@@ -73,6 +73,9 @@ namespace _2048_Console
     {
         private static int[][] Tiles;
         private static Random rd;
+        private static bool gameOver;
+        private static bool isAuthorized;
+        private static int score;
         static void Main(string[] args)
         {
             Tiles = new int[4][];
@@ -84,43 +87,77 @@ namespace _2048_Console
 
             ConsoleKeyInfo cki;
 
-            
+
             // Prevent example from ending if CTL+C is pressed.
             Console.TreatControlCAsInput = true;
 
             Console.WriteLine("Press any combination of CTL, ALT, and SHIFT, and a console key.");
-            Console.WriteLine("Press the Escape (Esc) key to quit: \n");
+            Console.WriteLine("Press the Escape (Esc) key to quit:");
             Tiles = WriteDefault();
-           // writeTiles(iBoard);
+            writeTiles(Tiles);
+            
+            cki = Console.ReadKey();
+
+            if (cki.Key == ConsoleKey.Enter)
+            {
+                isAuthorized = true;
+                gameOver = false;
+                score = 0;
+            }
             do
             {
-                cki = Console.ReadKey();
-
                 if (cki.Key == ConsoleKey.DownArrow)
                 {
+                    //Arrange the tiles  upward
                     rearrangeTiles(Tiles, KeyCode.Down);
+                    //merge the resulting tiles where similar
                     mergeTiles(Tiles, KeyCode.Down);
+                    //Rearrange the tiles 
+                    rearrangeTiles(Tiles, KeyCode.Down);
+                    //Add New Tile
+                    addTile();
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 else if (cki.Key == ConsoleKey.UpArrow)
                 {
+                    //Arrange the tiles  upward
                     rearrangeTiles(Tiles, KeyCode.Up);
+                    //merge the resulting tiles where similar
                     mergeTiles(Tiles, KeyCode.Up);
+                    //Rearrange the tiles 
+                    rearrangeTiles(Tiles, KeyCode.Up);
+                    //Add New Tile
+                    addTile();
+                    //write the resulting solution
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 else if (cki.Key == ConsoleKey.LeftArrow)
                 {
+                    //Arrange the tiles  Leftward
                     rearrangeTiles(Tiles, KeyCode.Left);
+                    //merge the resulting tiles where similar
                     mergeTiles(Tiles, KeyCode.Left);
+                    //Rearrange the tiles 
+                    rearrangeTiles(Tiles, KeyCode.Left);
+                    //Add New Tile
+                    addTile();
+                    //write the resulting solution
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
                 else if (cki.Key == ConsoleKey.RightArrow)
                 {
+                    //Arrange the tiles  Rightward
                     rearrangeTiles(Tiles, KeyCode.Right);
+                    //merge the resulting tiles where similar
                     mergeTiles(Tiles, KeyCode.Right);
+                    //Rearrange the tiles
+                    rearrangeTiles(Tiles, KeyCode.Right);
+                    //Add New Tile
+                    addTile();
+                    //write the resulting solution
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
                 }
@@ -131,7 +168,7 @@ namespace _2048_Console
                 if ((cki.Modifiers & ConsoleModifiers.Control) != 0) Console.Write("CTL+");
                 Console.WriteLine(cki.Key.ToString());
                  */
-            } while (cki.Key != ConsoleKey.Escape);
+            } while (cki.Key != ConsoleKey.Escape && isAuthorized);
 
         }
       
@@ -169,6 +206,7 @@ namespace _2048_Console
                         if (tiles[i][j] == tiles[i][j + 1])
                         {
                             tiles[i][j] =  tiles[i][j] + tiles[i][j + 1];
+                            score += tiles[i][j];
                             tiles[i][j + 1] = 0;
                         }
 
@@ -189,6 +227,7 @@ namespace _2048_Console
                         if (tiles[i][j] == tiles[i][j - 1])
                         {
                             tiles[i][j] = tiles[i][j] + tiles[i][j - 1];
+                            score += tiles[i][j];
                             tiles[i][j - 1] = 0;
                         }
 
@@ -209,8 +248,8 @@ namespace _2048_Console
                         if (tiles[i][j] == tiles[i + 1][j])
                         {
                             tiles[i][j] = tiles[i][j] + tiles[i + 1][j];
-
-                            tiles[i + 1][j] = 0;               
+                            score += tiles[i][j];
+                            tiles[i + 1][j] = 0;
                         }
 
                     }
@@ -230,7 +269,7 @@ namespace _2048_Console
                         if (tiles[i][j] == tiles[i - 1][j])
                         {
                             tiles[i][j] = tiles[i][j] + tiles[i - 1][j];
-
+                            score += tiles[i][j];
                             tiles[i - 1][j] = 0;
                         }
 
@@ -241,43 +280,57 @@ namespace _2048_Console
         }
         private static int[][] rearrangeTiles(int[][] tiles, KeyCode key)
         {
-            int[][] temp ;
+            int[][] temp;
             int count = 0;
             if (key == KeyCode.Left)
             {
-                temp = new int[Tiles.Count()][];
-
-                foreach(int[] arr in Tiles)
+                for (int i = 0; i < Tiles.Count(); i++)
                 {
-                    Array.Sort<int>(arr,
-                    new Comparison<int>(
-                            (i1, i2) => i2.CompareTo(i1)
-                    ));
+                    for (int j = 0; j < Tiles.Count(); j++)
+                    {
+                        if (Tiles[i][j] > 0)
+                            continue;
+                        int u = j;
 
-                    temp[count] = arr;
-                    count++;
+                        while (u < Tiles.Count())
+                        {
+                            if (Tiles[i][j] > 0)
+                                break;
+                            if (Tiles[i][u] > 0)
+                            {
+                                Tiles[i][j] = Tiles[i][u];
+                                Tiles[i][u] = 0;
+                            }
+                            u++;
+                        }
+                    }
                 }
 
-                Tiles = temp;
-                
             }
             else if (key == KeyCode.Right)
             {
-                temp = new int[Tiles.Count()][];
-
-                foreach (int[] arr in Tiles)
+                for (int i = 0; i < Tiles.Count(); i++)
                 {
-                    Array.Sort<int>(arr,
-                    new Comparison<int>(
-                            (i1, i2) => i1.CompareTo(i2)
-                    ));
+                    for (int j = (Tiles.Count() - 1); j >= 0; j--)
+                    {
+                        if (Tiles[i][j] > 0)
+                            continue;
+                        int u = j;
+                        while (u < Tiles.Count() && u >= 0)
+                        {
+                            if (Tiles[i][j] > 0)
+                                break;
+                            if (Tiles[i][u] > 0)
+                            {
+                                Tiles[i][j] = Tiles[i][u];
+                                Tiles[i][u] = 0;
+                            }
+                            u--;
+                        }
 
-                    temp[count] = arr;
-                    count++;
+                    }
                 }
 
-                Tiles = temp;
-               
             }
             else if (key == KeyCode.Up)
             {
@@ -287,57 +340,55 @@ namespace _2048_Console
                     {
                         if (Tiles[i][j] > 0)
                             continue;
-                        if (Tiles[i][j] == 0)
+
+                        int u = i;
+
+
+                        while (u < Tiles.Count())
                         {
-                            int u = i;
-
-
-                            while (u < Tiles.Count())
+                            if (Tiles[i][j] > 0)
+                                break;
+                            if (Tiles[u][j] > 0)
                             {
-                                if (Tiles[i][j] > 0)
-                                    break;
-                                if (Tiles[u][j] > 0)
-                                {
-                                    Tiles[i][j] = Tiles[u][j];
-                                    Tiles[u][j] = 0;
-                                }
-                                u++;
+                                Tiles[i][j] = Tiles[u][j];
+                                Tiles[u][j] = 0;
                             }
-
-
+                            u++;
                         }
+
+
+
                     }
                 }
 
             }
             else if (key == KeyCode.Down)
             {
-                for (int i = (Tiles.Count()- 1); i >=0; i--)
+                for (int i = (Tiles.Count() - 1); i >= 0; i--)
                 {
                     for (int j = 0; j < Tiles.Count(); j++)
                     {
                         if (Tiles[i][j] > 0)
                             continue;
-                        if (Tiles[i][j] == 0)
+
+                        int u = i;
+
+
+                        while (u < Tiles.Count() && u >= 0)
                         {
-                            int u = i;
-
-
-                            while (u < Tiles.Count() && u>=0)
+                            if (Tiles[i][j] > 0)
+                                break;
+                            if (Tiles[u][j] > 0)
                             {
-                                if (Tiles[i][j] > 0)
-                                    break;
-                                if (Tiles[u][j] > 0)
-                                {
 
-                                    Tiles[i][j] = Tiles[u][j];
-                                    Tiles[u][j] = 0;
-                                }
-                                u--;
+                                Tiles[i][j] = Tiles[u][j];
+                                Tiles[u][j] = 0;
                             }
-
-
+                            u--;
                         }
+
+
+
                     }
                 }
 
@@ -345,23 +396,76 @@ namespace _2048_Console
 
             return Tiles;
         }
+        private static int[][] addTile()
+        {
+            rd = new Random();
+            int px, py;
+            px = rd.Next(0, 4);
+            py = rd.Next(0, 4);
+
+            List<int> availableInd = randPosition(py);
+
+            //Incase The above fails. I would seach row by row
+            //for an empty tile below
+            if (availableInd.Count == 0)
+            {
+                for (int c = 0; c < Tiles.Count(); c++)
+                {
+                    py = c;
+                    availableInd = randPosition(py);
+                    if (availableInd.Count > 0)
+                        break;
+                }
+                if (availableInd.Count == 0)
+                    gameOver = true;
+            }
+            int r = rd.Next(0, availableInd.Count);
+            int newPx = availableInd[r];
+            if (Tiles[py][newPx] == 0)
+            {
+                Tiles[py][newPx] = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
+            }
+            else
+            {
+                py = py; // sHOULDN'T REACH HERE 
+            }
+
+            return Tiles;
+        }
+        
+        public static List<int> randPosition(int num)
+        {
+            //GET THE INDEXES OF THE EMPTY TILES
+            List<int> indexes = new List<int>();
+
+            //  var emptyTiles = arr.Where(x => x == 0).ToList();
+            indexes = Tiles[num].Select((s, index) => new { s, index })
+                      .Where(x => x.s == 0)
+                      .Select(x => x.index)
+                      .ToList();
+
+
+            return indexes;
+        }
         private static int[][] WriteDefault()
         {
             rd = new Random();
+            int pxPrev, pyPrev;
             for (int i = 0; i < 2; i++)
             {
                 int px = rd.Next(0, 4);
                 int py = rd.Next(0, 4);
-
+                pxPrev = px;
+                pyPrev = py;
                 if (Tiles[px][py] == 0)
                 {
                     Tiles[px][py] = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
 
-                    int c = rd.Next(0, 20);
-                    int g = rd.Next(0, 15);
+                    int Ha = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
+
                 }
             }
-            
+
             return Tiles;
         }
     }
