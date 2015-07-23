@@ -243,7 +243,20 @@ namespace _2048_Console
                 {
                     GameModel.isGameOver = true;
                     Console.WriteLine("Game Over");
-                    
+                    Console.WriteLine("Retry ? Y / N ");
+                    string restart = Console.ReadLine();
+                    while (true)
+                    {
+                        if (restart.ToUpper() == "Y")
+                        {
+                            Program.play();
+                            return Tiles;
+                        }
+                        else if (restart.ToUpper() == "N")
+                        {
+                            Environment.Exit(0);
+                        }
+                    }
                 }
             }
             int r = rd.Next(0, availableInd.Count);
