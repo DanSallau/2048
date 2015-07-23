@@ -35,7 +35,12 @@ namespace _2048_Console
 
         static void Main(string[] args)
         {
-            Tiles = new int[4][];
+            play();
+        }
+        
+        public static void play()
+        {
+             Tiles = new int[4][];
 
             for (int i = 0; i < 4; i++)
             {
@@ -45,6 +50,5 @@ namespace _2048_Console
             gameEngine engine = new gameEngine(Tiles);
             engine.runGame(key);
         }
-
     }
 }
