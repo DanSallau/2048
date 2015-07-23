@@ -103,7 +103,25 @@ namespace _2048_Console
                 isAuthorized = true;
                 gameOver = false;
                 score = 0;
+                Console.WriteLine("Game Begins.");
             }
+            else
+            {
+                Console.Write("You dint press the enter button");
+                cki = Console.ReadKey();
+                while (cki.Key != ConsoleKey.Escape)
+                {
+                    if (cki.Key == ConsoleKey.Enter)
+                    {
+                        isAuthorized = true;
+                        gameOver = false;
+                        score = 0;
+                        break;
+                    }
+                    cki = Console.ReadKey();
+                }
+            }
+            cki = Console.ReadKey();
             do
             {
                 if (cki.Key == ConsoleKey.DownArrow)
@@ -118,6 +136,8 @@ namespace _2048_Console
                     addTile();
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
+                    //Renew KeyBoard Listener
+                    cki = Console.ReadKey();
                 }
                 else if (cki.Key == ConsoleKey.UpArrow)
                 {
@@ -132,6 +152,8 @@ namespace _2048_Console
                     //write the resulting solution
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
+                    //Renew KeyBoard Listener
+                    cki = Console.ReadKey();
                 }
                 else if (cki.Key == ConsoleKey.LeftArrow)
                 {
@@ -146,6 +168,8 @@ namespace _2048_Console
                     //write the resulting solution
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
+                    //Renew KeyBoard Listener
+                    cki = Console.ReadKey();
                 }
                 else if (cki.Key == ConsoleKey.RightArrow)
                 {
@@ -160,6 +184,8 @@ namespace _2048_Console
                     //write the resulting solution
                     writeTiles(Tiles);
                     Console.Write(cki.Key.ToString());
+                    //Renew KeyBoard Listener
+                    cki = Console.ReadKey();
                 }
                 /*
                 Console.Write(" --- You pressed ");
@@ -168,13 +194,26 @@ namespace _2048_Console
                 if ((cki.Modifiers & ConsoleModifiers.Control) != 0) Console.Write("CTL+");
                 Console.WriteLine(cki.Key.ToString());
                  */
-            } while (cki.Key != ConsoleKey.Escape && isAuthorized);
+            } while (cki.Key != ConsoleKey.Escape && (isAuthorized == true));
 
         }
       
         public static void writeTiles(int[][] tiles)
         {
             Console.Clear();
+            Console.WriteLine("Instructions.");
+            Console.WriteLine("=================");
+            Console.WriteLine("{0}","Press the Escape (Esc) key to quit:");
+            Console.WriteLine("Press the Escape (Esc) key to quit:");
+            Console.WriteLine("Press any combination of CTL, ALT, and SHIFT, and a console key.");
+            Console.WriteLine("Press the Escape (Esc) key to quit:");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("Score : " + score);
+
+            Console.WriteLine();
+            Console.WriteLine();
 
             for (int i = 0; i < Tiles.Count(); i++)
             {
@@ -184,7 +223,7 @@ namespace _2048_Console
                 }
                 Console.WriteLine();
             }
-         //   Console.ReadLine();
+       //     Console.ReadLine();
         }
         public static string Indent(int count)
         {
@@ -417,7 +456,10 @@ namespace _2048_Console
                         break;
                 }
                 if (availableInd.Count == 0)
+                {
                     gameOver = true;
+                    Console.WriteLine("Game Over");
+                }
             }
             int r = rd.Next(0, availableInd.Count);
             int newPx = availableInd[r];
