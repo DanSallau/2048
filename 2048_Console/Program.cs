@@ -91,8 +91,7 @@ namespace _2048_Console
             // Prevent example from ending if CTL+C is pressed.
             Console.TreatControlCAsInput = true;
 
-            Console.WriteLine("Press any combination of CTL, ALT, and SHIFT, and a console key.");
-            Console.WriteLine("Press the Escape (Esc) key to quit:");
+           
             Tiles = WriteDefault();
             writeTiles(Tiles);
             
@@ -103,11 +102,12 @@ namespace _2048_Console
                 isAuthorized = true;
                 gameOver = false;
                 score = 0;
-                Console.WriteLine("Game Begins.");
+                writeTiles(Tiles);
+                Console.WriteLine("Game Begins.\n");
             }
             else
             {
-                Console.Write("You dint press the enter button");
+                Console.Write("You dint press the enter button\n");
                 cki = Console.ReadKey();
                 while (cki.Key != ConsoleKey.Escape)
                 {
@@ -116,8 +116,11 @@ namespace _2048_Console
                         isAuthorized = true;
                         gameOver = false;
                         score = 0;
+                        Console.Write("Game Begins\n");
+                        cki = Console.ReadKey();
                         break;
                     }
+                    Console.Write("You dint press the enter button\n");
                     cki = Console.ReadKey();
                 }
             }
@@ -459,6 +462,7 @@ namespace _2048_Console
                 {
                     gameOver = true;
                     Console.WriteLine("Game Over");
+                   
                 }
             }
             int r = rd.Next(0, availableInd.Count);
