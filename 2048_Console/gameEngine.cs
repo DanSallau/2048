@@ -60,21 +60,33 @@ namespace _2048_Console
                 if (cki.Key == ConsoleKey.DownArrow)
                 {
                     base.runGame(KeyCode.Down);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine(cki.Key.ToString());
                     cki = Console.ReadKey();
                 }
                 else if (cki.Key == ConsoleKey.UpArrow)
                 {
                     base.runGame(KeyCode.Up);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine(cki.Key.ToString());
                     cki = Console.ReadKey();
                 }
                 else if (cki.Key == ConsoleKey.LeftArrow)
                 {
                     base.runGame(KeyCode.Left);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine(cki.Key.ToString());
                     cki = Console.ReadKey();
                 }
                 else if (cki.Key == ConsoleKey.RightArrow)
                 {
                     base.runGame(KeyCode.Right);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine(cki.Key.ToString());
                     cki = Console.ReadKey();
                 }
 
