@@ -16,8 +16,10 @@ namespace _2048_Console
         }
         public int[][] mergeTiles(KeyCode key)
         {
+            //Merge similar tiles
             if (key == KeyCode.Left)
             {
+                //Check for left arrow
                 for (int i = 0; i < Tiles.Count(); i++)
                 {
                     for (int j = 0; j < (Tiles.Count() - 1); j++)
@@ -39,6 +41,7 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Right)
             {
+                //merge for right arrow
                 for (int i = 0; i < Tiles.Count(); i++)
                 {
                     for (int j = (Tiles[i].Count() - 1); j > 0; j--)
@@ -60,6 +63,7 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Up)
             {
+                //merging upward
                 for (int i = 0; i < Tiles.Count(); i++)
                 {
                     for (int j = 0; j < Tiles.Count(); j++)
@@ -81,6 +85,7 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Down)
             {
+                //merge downward
                 for (int i = (Tiles.Count() - 1); i >= 0; i--)
                 {
                     for (int j = 0; j < Tiles.Count(); j++)
@@ -105,8 +110,10 @@ namespace _2048_Console
 
         public int[][] rearrangeTiles(KeyCode key)
         {
+            //Arrange the tiles and brig them together 
             if (key == KeyCode.Left)
             {
+                //arrange to the left
                 for (int i = 0; i < Tiles.Count(); i++)
                 {
                     for (int j = 0; j < Tiles.Count(); j++)
@@ -132,6 +139,7 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Right)
             {
+                //arrange to the right
                 for (int i = 0; i < Tiles.Count(); i++)
                 {
                     for (int j = (Tiles.Count() - 1); j >= 0; j--)
@@ -157,6 +165,7 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Up)
             {
+                //arrange updarward
                 for (int i = 0; i < Tiles.Count(); i++)
                 {
                     for (int j = 0; j < Tiles.Count(); j++)
@@ -187,6 +196,7 @@ namespace _2048_Console
             }
             else if (key == KeyCode.Down)
             {
+                //arrange downward
                 for (int i = (Tiles.Count() - 1); i >= 0; i--)
                 {
                     for (int j = 0; j < Tiles.Count(); j++)
@@ -221,6 +231,7 @@ namespace _2048_Console
         }
         public int[][] addTile()
         {
+            //Add a new random tile
             rd = new Random();
             int px, py;
             px = rd.Next(0, 4);
@@ -234,8 +245,8 @@ namespace _2048_Console
             {
                 for (int c = 0; c < Tiles.Count(); c++)
                 {
-                    py = c;
-                    availableInd = randPosition(py);
+                    py = c; //reset py
+                    availableInd = randPosition(py);//try with each row
                     if (availableInd.Count > 0)
                         break;
                 }
@@ -249,11 +260,13 @@ namespace _2048_Console
                     {
                         if (restart.ToUpper() == "Y")
                         {
+                            //restart
                             Program.play();
                             return Tiles;
                         }
                         else if (restart.ToUpper() == "N")
                         {
+                            //exit game
                             Environment.Exit(0);
                         }
                     }
@@ -263,6 +276,7 @@ namespace _2048_Console
             int newPx = availableInd[r];
             if (Tiles[py][newPx] == 0)
             {
+                //our random tile is being put to it position here
                 Tiles[py][newPx] = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
             }
             else

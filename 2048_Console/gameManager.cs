@@ -13,13 +13,14 @@ namespace _2048_Console
         private DrawGame draw;
         public gameManager(int[][] tiles)
         {
+            //inject dependency and instantiations
             Tiles = tiles;
             tile = new TilesCl(tiles);
             draw = new DrawGame(tiles);
         }
         public virtual void runGame(KeyCode key)
         {
-            //Arrange the tiles  upward
+            //Arrange the tiles 
             tile.rearrangeTiles(key);
             //merge the resulting tiles where similar
             tile.mergeTiles(key);

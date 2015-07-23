@@ -35,18 +35,21 @@ namespace _2048_Console
 
         static void Main(string[] args)
         {
+            //play the game
             play();
         }
-        
+
         public static void play()
         {
-             Tiles = new int[4][];
+            //Create the rows and columns size
+            Tiles = new int[4][];
 
             for (int i = 0; i < 4; i++)
             {
                 Tiles[i] = new int[4];
             }
             KeyCode key = new KeyCode();
+            //our game engine object
             gameEngine engine = new gameEngine(Tiles);
             engine.runGame(key);
         }

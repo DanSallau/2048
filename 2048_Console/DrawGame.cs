@@ -12,12 +12,13 @@ namespace _2048_Console
         private Random rd;
         public DrawGame(int[][] tiles)
         {
+            //Inject dependency
             Tiles = tiles;
             rd = new Random();
         }
         public int[][] WriteDefault()
         {
-
+            //Write default selection before game start
             int pxPrev, pyPrev;
             for (int i = 0; i < 2; i++)
             {
@@ -29,8 +30,6 @@ namespace _2048_Console
                 {
                     Tiles[px][py] = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
 
-                    int Ha = rd.Next(0, 20) == 0 ? rd.Next(0, 15) == 0 ? 8 : 4 : 2;
-
                 }
             }
 
@@ -38,13 +37,17 @@ namespace _2048_Console
         }
         public void writeTiles(int[][] tiles)
         {
+            //Clear the console
             Console.Clear();
+            //Then write again
             Console.WriteLine("Instructions.");
             Console.WriteLine("=================");
             Console.WriteLine("{0}", "Press the Escape (Esc) key to quit:");
-            Console.WriteLine("Press the Escape (Esc) key to quit:");
-            Console.WriteLine("Press any combination of CTL, ALT, and SHIFT, and a console key.");
-            Console.WriteLine("Press the Escape (Esc) key to quit:");
+            Console.WriteLine("Press enter button to start");
+            Console.WriteLine("Press Up button to move up");
+            Console.WriteLine("Press Down button to move down ");
+            Console.WriteLine("Use RIght Arrao to navigate right");
+            Console.WriteLine("Use Left Arrow to navigate left");
             Console.WriteLine();
             Console.WriteLine();
 
@@ -57,7 +60,7 @@ namespace _2048_Console
             {
                 for (int j = 0; j < Tiles[i].Count(); j++)
                 {
-                    Console.Write(Indent(2) + Tiles[i][j]);
+                    Console.Write(Indent(5) + Tiles[i][j]);
                 }
                 Console.WriteLine();
             }
@@ -66,6 +69,7 @@ namespace _2048_Console
 
         public static string Indent(int count)
         {
+            //Indent , here we space the game and make it look nicer.
             return "".PadLeft(count);
         }
       
