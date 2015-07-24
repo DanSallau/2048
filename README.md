@@ -82,3 +82,8 @@ And the child class gameEngine.cs
     }    
 
 </pre>
+
+
+# Contribution
+
+The project is solely developed and maintained by Nuru Salihu Abdullahi
