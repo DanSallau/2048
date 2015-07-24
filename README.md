@@ -61,7 +61,7 @@ class gameManager
 
 </pre>
 
-And the chiled class gameEngine.cs
+And the child class gameEngine.cs
 
 <pre>
 
